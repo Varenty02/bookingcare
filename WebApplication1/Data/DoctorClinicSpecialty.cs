@@ -15,7 +15,7 @@ namespace bookingcare.Data
 
         [ForeignKey(nameof(ClinicId))]
         public Clinic Clinic { get; set; }
-        public string SpecialtyId { get; set; }
+        public int SpecialtyId { get; set; }
 
         [ForeignKey(nameof(SpecialtyId))]
         public Specialty Specialty { get; set; }

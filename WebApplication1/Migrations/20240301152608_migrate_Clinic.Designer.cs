@@ -12,8 +12,8 @@ using WebApplication1.Data;
 namespace bookingcare.Migrations
 {
     [DbContext(typeof(BookingCareContext))]
-    [Migration("20240218151337_migrate_all")]
-    partial class migrate_all
+    [Migration("20240301152608_migrate_Clinic")]
+    partial class migrate_Clinic
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,13 +58,16 @@ namespace bookingcare.Migrations
 
                     b.HasIndex("TimeId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("bookingcare.Data.Clinic", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -78,106 +81,32 @@ namespace bookingcare.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clinics");
                 });
 
-            modelBuilder.Entity("bookingcare.Data.DoctorClinicSpecialty", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClinicId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DoctorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SpecialtyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClinicId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("SpecialtyId");
-
-                    b.ToTable("DoctorClinicSpecialtys");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.History", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PatientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Historys");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.Schedule", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CurrentNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DoctorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("MaxNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TimeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("TimeId");
-
-                    b.ToTable("Schedules");
-                });
-
             modelBuilder.Entity("bookingcare.Data.Specialty", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -201,7 +130,7 @@ namespace bookingcare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuss");
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("bookingcare.Data.TimeType", b =>
@@ -219,7 +148,7 @@ namespace bookingcare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeTypes");
+                    b.ToTable("TimeType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -467,71 +396,6 @@ namespace bookingcare.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Status");
-
-                    b.Navigation("TimeType");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.DoctorClinicSpecialty", b =>
-                {
-                    b.HasOne("bookingcare.Data.Clinic", "Clinic")
-                        .WithMany()
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Data.AppUser", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.Specialty", "Specialty")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clinic");
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Specialty");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.History", b =>
-                {
-                    b.HasOne("WebApplication1.Data.AppUser", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Data.AppUser", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.Schedule", b =>
-                {
-                    b.HasOne("WebApplication1.Data.AppUser", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.TimeType", "TimeType")
-                        .WithMany()
-                        .HasForeignKey("TimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
 
                     b.Navigation("TimeType");
                 });

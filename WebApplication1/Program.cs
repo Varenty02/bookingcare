@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using bookingcare.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApplication1.Data;
@@ -10,9 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+//automapper quét các assembly,namespace chứa program
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Book API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking care API", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -24,6 +27,7 @@ builder.Services.AddSwaggerGen(option =>
     });
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
+        //yêu cầu loại bảo mật ,cách xác thực api sẽ được thực hiện khi truy cập tài nguyên là brearer token
         {
             new OpenApiSecurityScheme
             {
@@ -33,6 +37,7 @@ builder.Services.AddSwaggerGen(option =>
                     Id="Bearer"
                 }
             },
+            //danh sách phạm vi yêu cầu bảo mật VD:new string[] { "read", "write" }
             new string[]{}
         }
     });
@@ -44,7 +49,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddDbContext<BookingCareContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareString"));
 });
-
+builder.Services.AddScoped<ISpectialtyRepository, SpecialtyRepository>();
 //Cấu hình endpoint
 var app = builder.Build();
 
@@ -56,7 +61,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

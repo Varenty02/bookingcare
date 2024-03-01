@@ -28,14 +28,14 @@ namespace WebApplication1.Data
                 }
             }
         }
-        public DbSet<Booking>? Bookings { get; set; }
+        //public DbSet<Booking>? Bookings { get; set; }
         public DbSet<Clinic>? Clinics { get; set; }
-        public DbSet<DoctorClinicSpecialty>? DoctorClinicSpecialtys { get; set; }
-        public DbSet<History>? Historys { get; set; }
+        //public DbSet<DoctorClinicSpecialty>? DoctorClinicSpecialties { get; set; }
+        //public DbSet<History>? Histories { get; set; }
         public DbSet<Specialty>? Specialtys { get; set; }
-        public DbSet<Status>? Statuss { get; set; }
-        public DbSet<Schedule>? Schedules { get; set; }
-        public DbSet<TimeType>? TimeTypes { get; set; }
+        //public DbSet<Status>? Statuss { get; set; }
+        //public DbSet<Schedule>? Schedules { get; set; }
+        //public DbSet<TimeType>? TimeTypes { get; set; }
 
     }
 }
