@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace bookingcare.Controllers
 {
+    [Tags("Clinics")]
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class ClinicsController : ControllerBase
     {
         private readonly IClinicsRepository _clinicsRepository;
@@ -15,7 +18,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClinicModel>>> GetAllSpecialties()
+        public async Task<ActionResult<IEnumerable<ClinicModel>>> GetAllClinics()
         {
             try
             {
@@ -63,7 +66,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClinicModel>> AddSpecialty(ClinicModel clinicModel)
+        public async Task<ActionResult<ClinicModel>> AddClinic(ClinicModel clinicModel)
         {
             try
             {
@@ -77,7 +80,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSpecialty(int id)
+        public async Task<IActionResult> DeleteClinic(int id)
         {
             if (_clinicsRepository.ClinicsExists(id) == null)
             {

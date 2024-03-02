@@ -48,17 +48,22 @@ namespace WebApplication1.Data
 
 
                 );
-            builder.Entity<TimeType>().HasData
+            builder.Entity<Position>().HasData
                 (
 
-                new TimeType() { Id = 1, Value = "8:00 AM - 9:00 AM", ValueVie = "8:00 - 9:00" },
-                new TimeType() { Id = 2, Value = "9:00 AM - 10:00 AM", ValueVie = "9:00 - 10:00" },
-                new TimeType() { Id = 3, Value = "10:00 AM - 11:00 AM", ValueVie = "10:00 - 11:00" },
-                new TimeType() { Id = 4, Value = "11:00 AM - 0:00 PM", ValueVie = "11:00 - 12:00" },
-                new TimeType() { Id = 5, Value = "1:00 PM - 2:00 PM", ValueVie = "13:00 - 14:00" },
-                new TimeType() { Id = 6, Value = "2:00 PM - 3:00 PM", ValueVie = "14:00 - 15:00" },
-                new TimeType() { Id = 7, Value = "3:00 PM - 4:00 PM", ValueVie = "15:00 - 16:00" },
-                new TimeType() { Id = 8, Value = "4:00 PM - 5:00 PM", ValueVie = "16:00 - 17:00" }
+                new TimeType() { Id = 1, Value = "None", ValueVie = "Bác sĩ" },
+                new TimeType() { Id = 2, Value = "Master", ValueVie = "Thạc sĩ" },
+                new TimeType() { Id = 3, Value = "Doctor", ValueVie = "Tiến sĩ" },
+                new TimeType() { Id = 4, Value = "Associate Professor", ValueVie = "Phó giáo sư" },
+                new TimeType() { Id = 5, Value = "Professor", ValueVie = "Giáo sư" }
+
+                );
+            builder.Entity<Gender>().HasData
+                (
+
+                new TimeType() { Id = 1, Value = "Male", ValueVie = "Nam" },
+                new TimeType() { Id = 2, Value = "Female", ValueVie = "Nữ" },
+                new TimeType() { Id = 3, Value = "Other", ValueVie = "Khác" }
 
                 );
 
@@ -67,10 +72,16 @@ namespace WebApplication1.Data
         public DbSet<Clinic>? Clinics { get; set; }
         //public DbSet<DoctorClinicSpecialty>? DoctorClinicSpecialties { get; set; }
         //public DbSet<History>? Histories { get; set; }
-        public DbSet<Specialty>? Specialtys { get; set; }
-        public DbSet<Status>? Statuss { get; set; }
         //public DbSet<Schedule>? Schedules { get; set; }
+        public DbSet<Specialty>? Specialtys { get; set; }
+
+        //Metadata
+        public DbSet<Status>? Statuss { get; set; }
+        
         public DbSet<TimeType>? TimeTypes { get; set; }
+        public DbSet<Gender>? Genders { get; set; }
+
+        public DbSet<Position>? Positions { get; set; }
 
     }
 }

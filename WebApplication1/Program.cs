@@ -52,6 +52,7 @@ builder.Services.AddDbContext<BookingCareContext>(options => {
 //my service
 builder.Services.AddScoped<ISpectialtyRepository, SpecialtyRepository>();
 builder.Services.AddScoped<IClinicsRepository,ClinicsRepository>();
+builder.Services.AddScoped<IMetaDataRepository, MetaDataRepository>();
 //Cấu hình endpoint
 var app = builder.Build();
 
