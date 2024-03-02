@@ -49,7 +49,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddDbContext<BookingCareContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareString"));
 });
+//my service
 builder.Services.AddScoped<ISpectialtyRepository, SpecialtyRepository>();
+builder.Services.AddScoped<IClinicsRepository,ClinicsRepository>();
 //Cấu hình endpoint
 var app = builder.Build();
 

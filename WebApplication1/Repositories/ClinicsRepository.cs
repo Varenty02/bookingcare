@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using bookingcare.Data;
 using bookingcare.Models;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
@@ -30,24 +31,53 @@ namespace bookingcare.Repositories
             return _mapper.Map<ClinicModel>((_context.Clinics?.Any(c => c.Id == id)).GetValueOrDefault());
         }
 
-        public Task DeleteClinicAsync(int id)
+        public async Task DeleteClinicAsync(int id)
         {
-            throw new NotImplementedException();
+            var deleteClinic = _context.Clinics!.SingleOrDefault(x => x.Id == id);
+            if (deleteClinic != null)
+            {
+                _context.Clinics!.Remove(deleteClinic);
+                await _context.SaveChangesAsync();
+
+            }
         }
 
-        public Task<List<ClinicModel>> GetAllClinicsAsync()
+        public async Task<List<ClinicModel>?> GetAllClinicsAsync()
         {
-            throw new NotImplementedException();
+            if (_context.Clinics == null)
+            {
+                return null;
+            }
+            var clinics = await _context.Clinics.ToListAsync();
+            return _mapper.Map<List<ClinicModel>>(clinics);
         }
 
-        public Task<ClinicModel> GetClinicByIdAsync(int id)
+        public async Task<ClinicModel?> GetClinicByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (_context.Clinics == null)
+            {
+                return null;
+
+            }
+            var clinic = await _context.Clinics.FindAsync(id);
+
+            if (clinic == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ClinicModel>(clinic);
         }
 
-        public Task UpdateClinicAsync(int id, ClinicModel clinic)
+        public async Task UpdateClinicAsync(int id, ClinicModel clinic)
         {
-            throw new NotImplementedException();
+            var oldClinic = _context.Clinics!.SingleOrDefault(s => s.Id == id);
+            if (oldClinic != null && clinic != null)
+            {
+                var updateData = _mapper.Map<Clinic>(clinic);
+                _context.Clinics!.Update(updateData);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

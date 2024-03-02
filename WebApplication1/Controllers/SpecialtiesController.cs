@@ -26,7 +26,7 @@ namespace bookingcare.Controllers
 
         // GET: api/GetAllSpecialties
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Specialty>>> GetAllSpecialties()
+        public async Task<ActionResult<IEnumerable<SpecialtyModel>>> GetAllSpecialties()
         {
             try
             {
@@ -41,7 +41,7 @@ namespace bookingcare.Controllers
 
         // GET: api/Specialties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Specialty>> GetSpecialtyById(int id)
+        public async Task<ActionResult<SpecialtyModel>> GetSpecialtyById(int id)
         {
             try
             {

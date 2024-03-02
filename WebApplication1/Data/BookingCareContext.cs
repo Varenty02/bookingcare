@@ -33,9 +33,9 @@ namespace WebApplication1.Data
         //public DbSet<DoctorClinicSpecialty>? DoctorClinicSpecialties { get; set; }
         //public DbSet<History>? Histories { get; set; }
         public DbSet<Specialty>? Specialtys { get; set; }
-        //public DbSet<Status>? Statuss { get; set; }
+        public DbSet<Status>? Statuss { get; set; }
         //public DbSet<Schedule>? Schedules { get; set; }
-        //public DbSet<TimeType>? TimeTypes { get; set; }
+        public DbSet<TimeType>? TimeTypes { get; set; }
 
     }
 }
