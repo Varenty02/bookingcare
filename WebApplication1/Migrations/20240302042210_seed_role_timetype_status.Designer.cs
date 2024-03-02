@@ -12,8 +12,8 @@ using WebApplication1.Data;
 namespace bookingcare.Migrations
 {
     [DbContext(typeof(BookingCareContext))]
-    [Migration("20240301152608_migrate_Clinic")]
-    partial class migrate_Clinic
+    [Migration("20240302042210_seed_role_timetype_status")]
+    partial class seed_role_timetype_status
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,43 +23,6 @@ namespace bookingcare.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("bookingcare.Data.Booking", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DoctorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PatientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("StatusId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TimeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("TimeId");
-
-                    b.ToTable("Booking");
-                });
 
             modelBuilder.Entity("bookingcare.Data.Clinic", b =>
                 {
@@ -117,8 +80,11 @@ namespace bookingcare.Migrations
 
             modelBuilder.Entity("bookingcare.Data.Status", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -130,13 +96,42 @@ namespace bookingcare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Status");
+                    b.ToTable("Statuss");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "New",
+                            ValueVie = "Lịch hẹn mới"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Confirmed",
+                            ValueVie = "Đã xác nhận"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Done",
+                            ValueVie = "Đã khám xong"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Cancel",
+                            ValueVie = "Đã hủy"
+                        });
                 });
 
             modelBuilder.Entity("bookingcare.Data.TimeType", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -148,7 +143,57 @@ namespace bookingcare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeType");
+                    b.ToTable("TimeTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "8:00 AM - 9:00 AM",
+                            ValueVie = "8:00 - 9:00"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "9:00 AM - 10:00 AM",
+                            ValueVie = "9:00 - 10:00"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "10:00 AM - 11:00 AM",
+                            ValueVie = "10:00 - 11:00"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "11:00 AM - 0:00 PM",
+                            ValueVie = "11:00 - 12:00"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "1:00 PM - 2:00 PM",
+                            ValueVie = "13:00 - 14:00"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Value = "2:00 PM - 3:00 PM",
+                            ValueVie = "14:00 - 15:00"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Value = "3:00 PM - 4:00 PM",
+                            ValueVie = "15:00 - 16:00"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Value = "4:00 PM - 5:00 PM",
+                            ValueVie = "16:00 - 17:00"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -176,6 +221,29 @@ namespace bookingcare.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "47879a94-ab33-419f-83c5-9bd265e4bad7",
+                            ConcurrencyStamp = "1",
+                            Name = "Admin",
+                            NormalizedName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "773cb3f2-0948-47ee-8cb0-672b2d6adffb",
+                            ConcurrencyStamp = "2",
+                            Name = "User",
+                            NormalizedName = "User"
+                        },
+                        new
+                        {
+                            Id = "6f3fac44-3656-4f34-9be4-5021c5ffadf2",
+                            ConcurrencyStamp = "3",
+                            Name = "Doctor",
+                            NormalizedName = "Doctor"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -365,41 +433,6 @@ namespace bookingcare.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("bookingcare.Data.Booking", b =>
-                {
-                    b.HasOne("WebApplication1.Data.AppUser", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Data.AppUser", "Patient")
-                        .WithMany("Bookings")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.Status", "Status")
-                        .WithMany("Bookings")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.TimeType", "TimeType")
-                        .WithMany("Bookings")
-                        .HasForeignKey("TimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("Status");
-
-                    b.Navigation("TimeType");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -449,21 +482,6 @@ namespace bookingcare.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("bookingcare.Data.Status", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("bookingcare.Data.TimeType", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("WebApplication1.Data.AppUser", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

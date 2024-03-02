@@ -5,10 +5,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace bookingcare.Migrations
 {
-    public partial class init : Migration
+    public partial class seed_role_timetype_status : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Clinics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clinics", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -24,10 +40,57 @@ namespace bookingcare.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Specialtys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Specialtys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statuss",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ValueVie = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuss", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ValueVie = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -154,6 +217,42 @@ namespace bookingcare.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "47879a94-ab33-419f-83c5-9bd265e4bad7", "1", "Admin", "Admin" },
+                    { "6f3fac44-3656-4f34-9be4-5021c5ffadf2", "3", "Doctor", "Doctor" },
+                    { "773cb3f2-0948-47ee-8cb0-672b2d6adffb", "2", "User", "User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuss",
+                columns: new[] { "Id", "Value", "ValueVie" },
+                values: new object[,]
+                {
+                    { 1, "New", "Lịch hẹn mới" },
+                    { 2, "Confirmed", "Đã xác nhận" },
+                    { 3, "Done", "Đã khám xong" },
+                    { 4, "Cancel", "Đã hủy" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TimeTypes",
+                columns: new[] { "Id", "Value", "ValueVie" },
+                values: new object[,]
+                {
+                    { 1, "8:00 AM - 9:00 AM", "8:00 - 9:00" },
+                    { 2, "9:00 AM - 10:00 AM", "9:00 - 10:00" },
+                    { 3, "10:00 AM - 11:00 AM", "10:00 - 11:00" },
+                    { 4, "11:00 AM - 0:00 PM", "11:00 - 12:00" },
+                    { 5, "1:00 PM - 2:00 PM", "13:00 - 14:00" },
+                    { 6, "2:00 PM - 3:00 PM", "14:00 - 15:00" },
+                    { 7, "3:00 PM - 4:00 PM", "15:00 - 16:00" },
+                    { 8, "4:00 PM - 5:00 PM", "16:00 - 17:00" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
                 table: "RoleClaims",
@@ -197,7 +296,19 @@ namespace bookingcare.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Clinics");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "Specialtys");
+
+            migrationBuilder.DropTable(
+                name: "Statuss");
+
+            migrationBuilder.DropTable(
+                name: "TimeTypes");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

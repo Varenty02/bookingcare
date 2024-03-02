@@ -47,7 +47,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<BookingCareContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<BookingCareContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareDBString"));
 });
 //my service
 builder.Services.AddScoped<ISpectialtyRepository, SpecialtyRepository>();
