@@ -1,8 +1,16 @@
 ﻿using bookingcare.Repositories;
+using bookingcare.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using WebApplication1.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +21,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 //automapper quét các assembly,namespace chứa program
 builder.Services.AddAutoMapper(typeof(Program));
+var configuration = builder.Configuration;
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = configuration["JWT:ValidAudience"],
+        ValidIssuer = configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+    };
+});
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking care API", Version = "v1" });
@@ -44,15 +71,30 @@ builder.Services.AddSwaggerGen(option =>
 });
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 //inject identity context
+
+builder.Services.AddDbContext<BookingCareContext>(options => {
+    
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareDBString"));
+},ServiceLifetime.Scoped);
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<BookingCareContext>().AddDefaultTokenProviders();
-builder.Services.AddDbContext<BookingCareContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingCareDBString"));
-});
 //my service
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+builder.Services.AddScoped<IUrlHelper>(x => 
+{
+    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = x.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
+
+var mailsetting = builder.Configuration.GetSection("MailSettings");
+builder.Services.Configure<MailSettings>(mailsetting);
+builder.Services.AddSingleton<IEmailSender,SendMailService>();
 builder.Services.AddScoped<ISpectialtyRepository, SpecialtyRepository>();
 builder.Services.AddScoped<IClinicsRepository,ClinicsRepository>();
 builder.Services.AddScoped<IMetaDataRepository, MetaDataRepository>();
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 //Cấu hình endpoint
 var app = builder.Build();
 
@@ -64,6 +106,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

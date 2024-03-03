@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using bookingcare.Migrations;
 using bookingcare.Models;
 using bookingcare.Models.MetaData;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
@@ -10,10 +12,12 @@ namespace bookingcare.Repositories
     {
         private readonly BookingCareContext _context;
         private readonly IMapper _mapper;
-        public MetaDataRepository(BookingCareContext context, IMapper mapper)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public MetaDataRepository(BookingCareContext context, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         public async Task<List<GenderModel>> GetAllGendersAsync()
@@ -54,6 +58,20 @@ namespace bookingcare.Repositories
             }
             var timeTypes = await _context.TimeTypes.ToListAsync();
             return _mapper.Map<List<TimeTypeModel>>(timeTypes);
+        }
+        public async Task<List<RoleModel>> GetAllRolesAsync()
+        {
+            if (_context.TimeTypes == null)
+            {
+                return null;
+            }
+            var roles = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+            var listRoleModel= new List<RoleModel>();
+            foreach(var role in roles)
+            {
+                listRoleModel.Add(new RoleModel() { Name = role.Name,Id = role.Id});
+            }
+            return _mapper.Map<List<RoleModel>>(listRoleModel);
         }
     }
 }

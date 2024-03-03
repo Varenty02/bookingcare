@@ -9,5 +9,6 @@ namespace bookingcare.Repositories
         public Task<List<TimeTypeModel>> GetAllTimeTypesAsync();
         public Task<List<GenderModel>> GetAllGendersAsync();
         public Task<List<PositionModel>> GetAllPositionsAsync();
+        public Task<List<RoleModel>> GetAllRolesAsync();
     }
 }

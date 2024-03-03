@@ -69,5 +69,18 @@ namespace bookingcare.Controllers
             }
 
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RoleModel>>> GetAllRoles()
+        {
+            try
+            {
+                return Ok(await _metaDataRepository.GetAllRolesAsync());
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
     }
 }
