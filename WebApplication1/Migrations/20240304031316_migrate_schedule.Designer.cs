@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
@@ -11,9 +12,10 @@ using WebApplication1.Data;
 namespace bookingcare.Migrations
 {
     [DbContext(typeof(BookingCareContext))]
-    partial class BookingCareContextModelSnapshot : ModelSnapshot
+    [Migration("20240304031316_migrate_schedule")]
+    partial class migrate_schedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,26 +23,6 @@ namespace bookingcare.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("bookingcare.Data.Booking", b =>
-                {
-                    b.Property<string>("PatientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientId", "ScheduleId");
-
-                    b.HasIndex("ScheduleId");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("Bookings");
-                });
 
             modelBuilder.Entity("bookingcare.Data.Clinic", b =>
                 {
@@ -353,21 +335,21 @@ namespace bookingcare.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d49493ce-a2f7-466b-b473-b81ba4f332d4",
+                            Id = "d294283e-95e3-4e72-a7b0-529d790499bf",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "0cc8cef9-acb3-42c6-8db9-4c74e2688069",
+                            Id = "db472591-7c35-402b-aaf4-5a2ecf5bf616",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "6fccd4c6-0829-47a4-b2b8-b5c5ec563539",
+                            Id = "a8ef2579-6a55-4286-82b6-558152eb816b",
                             ConcurrencyStamp = "3",
                             Name = "Doctor",
                             NormalizedName = "Doctor"
@@ -555,33 +537,6 @@ namespace bookingcare.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("bookingcare.Data.Booking", b =>
-                {
-                    b.HasOne("WebApplication1.Data.AppUser", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.Schedule", "Schedule")
-                        .WithMany()
-                        .HasForeignKey("ScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("bookingcare.Data.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("Schedule");
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("bookingcare.Data.DoctorInfo", b =>

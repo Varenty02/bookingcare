@@ -9,12 +9,14 @@ using WebApplication1.Data;
 using bookingcare.Data;
 using bookingcare.Repositories;
 using bookingcare.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace bookingcare.Controllers
 {
     [Tags("Specialty")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class SpecialtiesController : ControllerBase
     {
         private readonly ISpectialtyRepository _spectialtyRepository;
@@ -26,6 +28,7 @@ namespace bookingcare.Controllers
 
         // GET: api/GetAllSpecialties
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<SpecialtyModel>>> GetAllSpecialties()
         {
             try
@@ -41,6 +44,7 @@ namespace bookingcare.Controllers
 
         // GET: api/Specialties/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<SpecialtyModel>> GetSpecialtyById(int id)
         {
             try
@@ -57,6 +61,7 @@ namespace bookingcare.Controllers
         // PUT: api/Specialties/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateSpecialty(int id, SpecialtyModel specialtyModel)
         {
             if (_spectialtyRepository.SpecialtyExists(id) == null)
@@ -79,6 +84,7 @@ namespace bookingcare.Controllers
         // POST: api/Specialties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<SpecialtyModel>> AddSpecialty(SpecialtyModel specialtyModel)
         {
             try
@@ -94,6 +100,7 @@ namespace bookingcare.Controllers
 
         // DELETE: api/Specialties/5
         [HttpDelete("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteSpecialty(int id)
         {
             if (_spectialtyRepository.SpecialtyExists(id) == null)

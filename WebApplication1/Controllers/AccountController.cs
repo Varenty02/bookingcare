@@ -1,5 +1,6 @@
 ﻿using bookingcare.Models;
 using bookingcare.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bookingcare.Controllers
@@ -7,6 +8,7 @@ namespace bookingcare.Controllers
     [Tags("Account")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;

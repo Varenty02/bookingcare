@@ -6,24 +6,16 @@ namespace bookingcare.Data
 {
     public class Booking
     {
-        //[Key]
-        //public string Id { get; set; }
+        public int ScheduleId { get; set; }
+        [ForeignKey(nameof(ScheduleId))]
+        public Schedule Schedule { get; set; }
+        public int StatusId { get; set; }
+        [ForeignKey(nameof(StatusId))]
+        public Status Status { get; set; }
+        public string PatientId { get; set; }
 
-        //public string StatusId { get; set; }
-        //[ForeignKey(nameof(StatusId))]
-        //public Status Status { get; set; }
-        //public string DoctorId { get; set; }
-        //[ForeignKey(nameof(DoctorId))]
-        //public virtual AppUser Doctor { get; set; }
-        //public string? PatientId { get; set; }
-        
-        //[InverseProperty("Bookings")]
-        //[ForeignKey(nameof(PatientId))]
-        
-        //public virtual AppUser Patient { get; set; }
-        //public DateTime Date { get; set; }
-        //public string TimeId { get; set; }
-        //[ForeignKey(nameof(TimeId))]
-        //public TimeType TimeType { get; set; }
+        [ForeignKey(nameof(PatientId))]
+
+        public  AppUser Patient { get; set; }
     }
 }

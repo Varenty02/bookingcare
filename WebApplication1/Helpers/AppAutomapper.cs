@@ -15,6 +15,12 @@ namespace bookingcare.Helpers
             CreateMap<Position, PositionModel>().ReverseMap();
             CreateMap<TimeType, TimeTypeModel>().ReverseMap();
             CreateMap<Gender, GenderModel>().ReverseMap();
+            CreateMap<DoctorInfo, DoctorInfoModel>().ReverseMap();
+            //Map for schedule
+            CreateMap<Schedule, ScheduleModel>();
+            CreateMap<ScheduleCreateModel, Schedule>()
+           .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<Booking, BookingModel>().ReverseMap();
         }
 
     }

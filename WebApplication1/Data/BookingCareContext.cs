@@ -28,6 +28,7 @@ namespace WebApplication1.Data
                     entityType.SetTableName(tableName.Substring(6));
                 }
             }
+            modelBuilder.Entity<Booking>().HasKey(e => new {e.PatientId,e.ScheduleId});
             SeedValue(modelBuilder);
         }
         private static void SeedValue(ModelBuilder builder)
@@ -68,11 +69,10 @@ namespace WebApplication1.Data
                 );
 
         }
-        //public DbSet<Booking>? Bookings { get; set; }
+        public DbSet<Booking>? Bookings { get; set; }
         public DbSet<Clinic>? Clinics { get; set; }
         //public DbSet<DoctorClinicSpecialty>? DoctorClinicSpecialties { get; set; }
         //public DbSet<History>? Histories { get; set; }
-        //public DbSet<Schedule>? Schedules { get; set; }
         public DbSet<Specialty>? Specialtys { get; set; }
 
         //Metadata
@@ -82,6 +82,7 @@ namespace WebApplication1.Data
         public DbSet<Gender>? Genders { get; set; }
 
         public DbSet<Position>? Positions { get; set; }
-
+        public DbSet<DoctorInfo>? DoctorInfos { get; set; }
+        public DbSet<Schedule>? Schedules { get; set; }
     }
 }

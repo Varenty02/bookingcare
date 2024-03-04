@@ -95,6 +95,9 @@ builder.Services.AddScoped<IClinicsRepository,ClinicsRepository>();
 builder.Services.AddScoped<IMetaDataRepository, MetaDataRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IDoctorInfoRepository, DoctorInfoRepository>();
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 //Cấu hình endpoint
 var app = builder.Build();
 

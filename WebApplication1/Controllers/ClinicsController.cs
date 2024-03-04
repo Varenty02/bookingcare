@@ -1,6 +1,7 @@
 ﻿using bookingcare.Data;
 using bookingcare.Models;
 using bookingcare.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bookingcare.Controllers
@@ -8,6 +9,7 @@ namespace bookingcare.Controllers
     [Tags("Clinics")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class ClinicsController : ControllerBase
     {
         private readonly IClinicsRepository _clinicsRepository;
@@ -18,6 +20,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ClinicModel>>> GetAllClinics()
         {
             try
@@ -32,6 +35,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ClinicModel>> GetClinicById(int id)
         {
             try
@@ -46,6 +50,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpPut("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateClinic(int id, ClinicModel clinicModel)
         {
             if (_clinicsRepository.ClinicsExists(id) == null)
@@ -66,6 +71,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult<ClinicModel>> AddClinic(ClinicModel clinicModel)
         {
             try
@@ -80,6 +86,7 @@ namespace bookingcare.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteClinic(int id)
         {
             if (_clinicsRepository.ClinicsExists(id) == null)
